@@ -67,17 +67,17 @@ class test_language_objects(unittest.TestCase):
         self.assertEqual(p1.sentences, [s1, s2])
 
     def test_count_sentences(self):
-        p1 = Passage("""But I, who wanted to read the book of the world and the book of my own being, I have,\
-         for the sake of a meaning I had anticipated before I read, scorned the symbols and letters, I\
-         called the visible world a deception, called my eyes and my tongue coincidental and worthless forms\
-         without substance. No, this is over, I have awakened, I have indeed awakened and have not been born\
+        p1 = Passage("""But I, who wanted to read the book of the world and the book of my own being, I have,
+         for the sake of a meaning I had anticipated before I read, scorned the symbols and letters, I
+         called the visible world a deception, called my eyes and my tongue coincidental and worthless forms
+         without substance. No, this is over, I have awakened, I have indeed awakened and have not been born
          before this very day."
         This is a sentence that doesn't express intention. I want this sentence to express intention..
         He started to feel that that was enough coffee for today.""")
         self.assertEqual(p1.count_sentences(), 5)
 
     def test_intentional_sentences_density(self):
-        p1 = Passage("""But I, who wanted to read the book of the world and the book of my own being, I have,\
+        p1 = Passage("""But I, who wanted to read the book of the world and the book of my own being, I have,
          for the sake of a meaning I had anticipated before I read, scorned the symbols and letters, I
          called the visible world a deception, called my eyes and my tongue coincidental and worthless forms
          without substance. No, this is over, I have awakened, I have indeed awakened and have not been born
@@ -100,38 +100,44 @@ class test_detection_functions(unittest.TestCase):
 
     def test_is_sentence_intentional(self):
         s1 = Sentence('"How deaf and stupid have I been!" he thought, walking swiftly along.')
-        s2 = Sentence("This is a sentence that doesn't express intention.")
-        s3 = Sentence('I want this sentence to express intention..')
-        s4 = Sentence('He started to feel that that was enough coffee for today.')
-        s5 = Sentence(u'I want this sentence to express intention..')
         self.assertEqual(True, is_sentence_intentional(s1))
+        s2 = Sentence("This is a sentence that doesn't express intention.")
         self.assertEqual(False, is_sentence_intentional(s2))
+        s3 = Sentence('I want this sentence to express intention..')
         self.assertEqual(True, is_sentence_intentional(s3))
+        s4 = Sentence('He started to feel that that was enough coffee for today.')
         self.assertEqual(True, is_sentence_intentional(s4))
+        s5 = Sentence(u'I want this sentence to express intention..')
         self.assertEqual(True, is_sentence_intentional(s5))
 
-    def test_all_intentional_sentences(self):
+    def test_all_intentional_sentences_method(self):
         p1 = Passage(u'''
-"How deaf and stupid have I been!" he thought, walking swiftly along. "When someone reads a text,\
-wants to discover its meaning, he will not scorn the symbols and letters and call them deceptions,\
-coincidence, and worthless hull, but he will read them, he will study and love them, letter by\
-letter. But I, who wanted to read the book of the world and the book of my own being, I have,\
-for the sake of a meaning I had anticipated before I read, scorned the symbols and letters, I\
-called the visible world a deception, called my eyes and my tongue coincidental and worthless forms\
-without substance. No, this is over, I have awakened, I have indeed awakened and have not been born\
-before this very day."
-This is a sentence that doesn't express intention. I want this sentence to express intention..
-He started to feel that that was enough coffee for today.
+            "How deaf and stupid have I been!" he thought, walking swiftly along. "When someone reads a text,
+            wants to discover its meaning, he will not scorn the symbols and letters and call them deceptions,
+            coincidence, and worthless hull, but he will read them, he will study and love them, letter by
+            letter. But I, who wanted to read the book of the world and the book of my own being, I have,
+            for the sake of a meaning I had anticipated before I read, scorned the symbols and letters, I
+            called the visible world a deception, called my eyes and my tongue coincidental and worthless forms
+            without substance. No, this is over, I have awakened, I have indeed awakened and have not been born
+            before this very day."
+            This is a sentence that doesn't express intention. I want this sentence to express intention..
+            He started to feel that that was enough coffee for today.
         ''')
         s1 = Sentence("I want this sentence to express intention..")
         s2 = Sentence("He started to feel that that was enough coffee for today.")
-        s3 = Sentence(u'''"When someone reads a text,\
-wants to discover its meaning, he will not scorn the symbols and letters and call them deceptions,\
-coincidence, and worthless hull, but he will read them, he will study and love them, letter by\
-letter.''')
+        s3 = Sentence(u'''"When someone reads a text,
+            wants to discover its meaning, he will not scorn the symbols and letters and call them deceptions,
+            coincidence, and worthless hull, but he will read them, he will study and love them, letter by
+            letter.''')
         self.assertTrue(s1 in p1.all_intentional_sentences())
         self.assertTrue(s2 in p1.all_intentional_sentences())
         self.assertTrue(s3 in p1.all_intentional_sentences())
+
+    def test_intentional_sentence_edge_cases(self):
+        s1 = Sentence(u"My desire is to become a Samana.")
+        self.assertEqual(True, is_sentence_intentional(s1))
+        s2 = Sentence(u"I am going to become a Samana.")
+        self.assertEqual(True, is_sentence_intentional(s2))
 
 
 if __name__ == '__main__':

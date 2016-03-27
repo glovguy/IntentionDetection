@@ -14,8 +14,8 @@ def save_and_quit(my_output, fileName):
         outputFileName = outputFileName + '.intention'
     output_file = open(outputFileName, 'w')
     json.dump(my_output, output_file)
-    print "my_output"
-    print my_output
+    # print "my_output"
+    # print my_output
     print "file saved as ", outputFileName
     quit('saved and quitting')
 
@@ -58,14 +58,14 @@ def determine_file_type(fileName):
     return fileTYPE
 
 
-def prompt_setences_and_ask_intention(raw_text):
+def prompt_setences_and_ask_intention(targetText):
     #########################
     ## Cycle through lines ##
     #########################
     print "Okay, let's begin...\n-----\n\n"
-    sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
+    # sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
     my_output = []
-    for eachParagraph in raw_text:
+    for eachParagraph in targetText:
         selectedSentences = []
         if eachParagraph == '\n':
             continue
@@ -104,6 +104,8 @@ def prompt_setences_and_ask_intention(raw_text):
                 my_output = my_output + [eachSentence, 0]
             i += 1
 
+# def restart_prompting(rawText):
+
 
 if __name__ == "__main__":
     ################################
@@ -118,6 +120,7 @@ if __name__ == "__main__":
         file_type = determine_file_type(fileName)
     fileAsLists = load_file(fileName, file_type)
     rawText = " ".join(fileAsLists)
+    targetText = Passage(rawText)
     if file_type == 'txt':
         print "And what would you like to do with this file?"
         print "1: Print all intentional sentences"
@@ -128,17 +131,17 @@ if __name__ == "__main__":
         selectedFunction = input("\n: ")
         if selectedFunction == 1:
             ## 1: Print all intentional sentences
-            sentences = Passage(rawText).all_intentional_sentences()
+            sentences = targetText.all_intentional_sentences()
             print [x.text for x in sentences]
         elif selectedFunction == 2:
             ## 2: Total number of sentences in the entire document
-            print Passage(rawText).count_sentences()
+            print targetText.count_sentences()
         elif selectedFunction == 3:
             ## 3: Print report on density of intentional statements in text
-            print Passage(rawText).intentional_sentences_density()
+            print targetText.intentional_sentences_density()
         elif file_type == "txt" and selectedFunction == 4:
             ## 4: User inputs to determine which sentences are intentional
-            my_output = prompt_setences_and_ask_intention(fileAsLists)
+            my_output = prompt_setences_and_ask_intention(targetText)
             save_and_quit(my_output, fileName)
         elif selectedFunction == 0:
             ## 0: Perform unit tests

@@ -12,13 +12,6 @@
 
 A,B Didn’t detect: “I have come to tell you that it is my longing to…”
 
-X A,B Didn’t detect: “My desire is to become a Samana.”
-	Drat, it looks like the POS tagger mistagged the “my” in “my desire” as a proper noun. No amount of regex work will make that work. Oh well, throwing this out.
-
-X False positive: “He remembered that he had often felt a slight pain in bed…”
-	This is debatable though, seeing as how it could be interpreted as showing intent, even though the author’s purpose was probably just to evoke an empathetic imagining in the reader.
-	I think I will call this as no longer a false positive.
-
 A,B,C Didn’t detect: “He did not have the slightest doubt that…”
 	This is also debatable, but should have been picked up.
 	Unfortunately, there is a mislabelling from the nltk, which didn’t notice that that “did not have” as the entire verb construction.
@@ -37,8 +30,9 @@ X A,D Didn’t detect: “…he had started to feel that the love of his father 
 	Should I detect “feel that…” as a special case? It seems to denote a cognitive quality that simply “feel…” doesn’t.
 	(feel that, sense that, discern that, notice that, aware that, conscious that, hold that, maintain that, get the impression that, have a hunch that)
 
-A,D False Positive: “How deaf and stupid have I been!” he THOUGHT, walking swiftly along.
+X A,D False Positive: “How deaf and stupid have I been!” he THOUGHT, walking swiftly along.
 	To fix this, I am going to move “thought” to the category of verbs that only is triggered when it is accompanied with the word “that”. It might be used sometimes in intentional ways without the “that”, but it is more of a phenomenal word than one with cognitive content.
+	Actually, this is not a false positive--it is an explanation for past action, though, and not future action.
 
 X Didn’t catch: “No, this is over, I have awakened, I have indeed awakened and have not been born before this very day.” (The context is that he is remarking to himself that he has been blind to the truth of things, and he is here deciding to change his ways.)
 	This one is exceedingly tricky, and I don’t think I have any particular method for having the system detect this. The intention in this sentence is communicated implicitly instead of outright stated, and I don’t think there is any way to have a script catch this since all of the intention is hidden in the context, rather than explicitly stated.
