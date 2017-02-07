@@ -1,2 +1,3 @@
-nltk==3.2.1
 spacy==1.2.0
+-e git://github.com/glovguy/nlok.git#egg=nlok
+-e git://github.com/pattern3/pattern.git#egg=pattern

@@ -1,5 +1,5 @@
 import spacy
-from language import tense, load_spacy
+from spacylang import tense, load_spacy
 from proposition import Predicate
 
 nlp = load_spacy()
@@ -8,8 +8,8 @@ class Statement(object):
   '''Understands a description whose propositional content is meant as true'''
 
   def __init__(self, text):
-    doc = nlp(unicode(text))
-    self.text = doc.sents.next() # Only stores first full sentence
+    doc = nlp(text)
+    self.text = next(doc.sents) # Only stores first full sentence
     self.noun_chunks = doc.noun_chunks
     self.assign_tense()
     self.assign_subject()

@@ -25,4 +25,4 @@ class Predicate(object):
     adverbModifierText = ' '.join(str(t).lower() for c in adverbModifierTokens for t in c.subtree)
     
     predicateTextOrder = filter(None,[auxText, self.verb.text, dativeText, doText, adverbText, clausalText, adverbModifierText])
-    self.text = unicode.strip(' '.join(predicateTextOrder))
+    self.text = str.strip(' '.join(predicateTextOrder))
